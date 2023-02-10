@@ -39,9 +39,7 @@ const resolvers = {
       if (context.user) {
         const user = await User.findOneAndUpdate(
           { _id: context.user._id },
-          {
-            $push: { savedBooks: bookData },
-          },
+          { $push: { savedBooks: bookData } },
           { new: true }
         );
 
@@ -49,5 +47,18 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
+    removeBook: async (parent, { bookId }, context) => {
+      if (context.user) {
+        const user = await User.findOneAndDelete(
+          { _id: context.user._id },
+          { $pull: { savedBooks: { bookId } } },
+          { new: true }
+        );
+        return user;
+      }
+      throw new AuthenticationError("You need to be logged in!");
+    },
   },
 };
+
+module.exports = resolvers;
