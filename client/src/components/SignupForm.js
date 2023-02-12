@@ -1,63 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
-import { useMutation } from "@apollo/client";
-import { ADD_USER } from "../utils/mutations";
-import Auth from "../utils/auth";
+import React, { useState } from 'react';
+import { Form, Button, Alert } from 'react-bootstrap';
+
+import Auth from '../utils/auth';
+
+import { useMutation } from '@apollo/client';
+import { ADD_USER } from '../utils/mutations';
 
 const SignupForm = () => {
-  // set initial form state
-  const [userFormData, setUserFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-
-  // set state for form validation
   const [validated] = useState(false);
-  // set state for alert
+
   const [showAlert, setShowAlert] = useState(false);
 
-  const [addUser, { error }] = useMutation(ADD_USER);
+  const [formState, setFormState] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
 
-  useEffect(() => {
-    if (error) {
-      setShowAlert(true);
-    } else {
-      setShowAlert(false);
-    }
-  }, [error]);
-
-  const handleInputChange = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
 
-    setUserFormData({ ...userFormData, [name]: value });
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
   };
+
+  const [addUser, { error }] = useMutation(ADD_USER);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
+    // use try/catch instead of promises to handle errors
     try {
+      // execute addUser mutation and pass in variable data from form
       const { data } = await addUser({
-        variables: { ...userFormData },
+        variables: { ...formState },
       });
-
+      console.log(data);
       Auth.login(data.addUser.token);
     } catch (e) {
+      console.log(error)
       console.error(e);
     }
-
-    setUserFormData({
-      username: "",
-      email: "",
-      password: "",
-    });
   };
 
   return (
@@ -80,8 +65,8 @@ const SignupForm = () => {
             type="text"
             placeholder="Your username"
             name="username"
-            onChange={handleInputChange}
-            value={userFormData.username}
+            onChange={handleChange}
+            value={formState.username}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -95,8 +80,8 @@ const SignupForm = () => {
             type="email"
             placeholder="Your email address"
             name="email"
-            onChange={handleInputChange}
-            value={userFormData.email}
+            onChange={handleChange}
+            value={formState.email}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -110,8 +95,8 @@ const SignupForm = () => {
             type="password"
             placeholder="Your password"
             name="password"
-            onChange={handleInputChange}
-            value={userFormData.password}
+            onChange={handleChange}
+            value={formState.password}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -121,9 +106,9 @@ const SignupForm = () => {
         <Button
           disabled={
             !(
-              userFormData.username &&
-              userFormData.email &&
-              userFormData.password
+              formState.username &&
+              formState.email &&
+              formState.password
             )
           }
           type="submit"

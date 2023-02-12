@@ -8,9 +8,9 @@ const resolvers = {
       if (context.user) {
         const userData = await User.findOne({ _id: context.user._id })
         .select('-__v -password')
-        .populate('books');
+        .populate('savedBooks');
 
-        return unserData;
+        return userData;
       }
       throw new AuthenticationError("You need to be logged in!");
     }
@@ -57,7 +57,7 @@ const resolvers = {
       try {
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { savedBooks: { bookId: bookId } } },
+          { $pull: { savedBooks: { bookId } } },
           { new: true }
         );
         return updatedUser;
