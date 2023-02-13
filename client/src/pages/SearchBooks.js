@@ -3,7 +3,7 @@ import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'reac
 
 import Auth from '../utils/auth';
 // Import the `useMutation()` hook from Apollo Client
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from '@apollo/client';
 // Import the GraphQL mutation
 import { SAVE_BOOK } from '../utils/mutations';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
