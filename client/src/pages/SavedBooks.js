@@ -9,11 +9,13 @@ import {
 
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
+// Import the `useQuery()` and `useMutation()` hooks from Apollo Client
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_ME } from "../utils/queries";
 import { REMOVE_BOOK } from "../utils/mutations";
 
 const SavedBooks = () => {
+  // Execute the query on component load
   const { loading, data } = useQuery(QUERY_ME);
   const [deleteBook] = useMutation(REMOVE_BOOK);
   const userData = data?.me || {};
@@ -35,7 +37,7 @@ const SavedBooks = () => {
     }
   };
 
-  // if data isn't here yet, say so
+  // If the data is still loding, render a loading message
   if (loading) {
     return <h2>LOADING...</h2>;
   }

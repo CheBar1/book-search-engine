@@ -2,6 +2,7 @@ const { AuthenticationError } = require("apollo-server-express");
 const { Book, User } = require("../models");
 const { signToken } = require("../utils/auth");
 
+// Creates the functions that fulfill the queries defined in `typeDefs.js`
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
@@ -16,6 +17,8 @@ const resolvers = {
       throw new AuthenticationError("Not logged in");
     },
   },
+
+ // Defines the functions that will fulfill the mutations
 
   Mutation: {
     addUser: async (parent, args) => {

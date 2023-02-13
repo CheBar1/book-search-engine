@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+// Import the `useMutation()` hook from Apollo Client
 import { useMutation } from '@apollo/client';
+// Import the GraphQL mutation
 import { ADD_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
@@ -14,7 +16,7 @@ const SignupForm = () => {
 
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
- 
+ // Invoke `useMutation()` hook to return a Promise-based function and data about the ADD_USER mutation
   const [addUser] = useMutation(ADD_USER);
 
   const handleInputChange = (event) => {
