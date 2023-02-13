@@ -49,6 +49,7 @@ const resolvers = {
           { new: true, runValidators: true }
         );
         return updatedUser;
+        
       } catch (err) {
         console.log(err);
         return err;
