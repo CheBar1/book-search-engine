@@ -4,7 +4,7 @@
 * [Description](#description)
 * [User Story](#user-story)
 * [Acceptance Criteria](#acceptance-criteria)
-* [Screenshots](#screenshots)
+* [Screenshot](#screenshot)
 * [Technology](#technology) 
 * [Installation](#installation) 
 * [Usage](#usage) 
@@ -60,7 +60,7 @@ THEN that book is deleted from my saved books list<br>
 WHEN I click on the Logout button<br>
 THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button   
 
-## Screenshots
+## Screenshot
 ![ScreenShot](../Develop/client/public/bookSearchScreenshot.png)
  
 ## Technology
