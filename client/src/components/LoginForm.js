@@ -1,42 +1,47 @@
 // see SignupForm.js for comments
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/react-hooks";
 import { LOGIN_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
 
 const LoginForm = () => {
+  const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [login, { error }] = useMutation(LOGIN_USER);
+
+  const [loginUser, { error }] = useMutation(LOGIN_USER);
 
   // submit form
+  const handleInputChange = async (event) => {
+    const { name, value } = event.target;
+    setUserFormData({ ...userFormData, [name]: value });
+  };
+  
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     try {
-      const { data } = await login({
-        variables: { ...formState },
+      const { data } = await loginUser({
+        variables: { ...userFormData },
       });
 
       Auth.login(data.login.token);
     } catch (e) {
-      console.log(error)
       console.error(e);
+      setShowAlert(true);
     }
+
+    setUserFormData({
+      username: "",
+      email: "",
+      password: "",
+    });
   };
-
-  const [formState, setFormState] = useState({ email: '', password: '' });
-
-  // update state based on form input changes
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-
-    setFormState({ ...formState, [name]: value });
-  };
-   
-
-  
- 
 
   return (
     <>
@@ -56,7 +61,7 @@ const LoginForm = () => {
             placeholder="Your email"
             name="email"
             onChange={handleInputChange}
-            value={formState.email}
+            value={userFormData.email}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -71,7 +76,7 @@ const LoginForm = () => {
             placeholder="Your password"
             name="password"
             onChange={handleInputChange}
-            value={formState.password}
+            value={userFormData.password}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -79,7 +84,7 @@ const LoginForm = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Button
-          disabled={!(formState.email && formState.password)}
+          disabled={!(userFormData.email && userFormData.password)}
           type="submit"
           variant="success"
         >
