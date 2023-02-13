@@ -88,7 +88,7 @@ npm run develop
 * Application has been deployed to Heroku.
 
 ## Heroku Link
-[Click here for Heroku Link](https://www…)
+[Click here for Heroku Link](https://lit-springs-78568.herokuapp.com/)
  
 ## Contact Me
 * GitHub: [CheBar1](https://github.com/CheBar1)
