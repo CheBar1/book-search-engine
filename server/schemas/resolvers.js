@@ -3,7 +3,6 @@ const { Book, User } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
-
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
@@ -19,7 +18,6 @@ const resolvers = {
   },
 
   Mutation: {
-
     addUser: async (parent, args) => {
       const user = await User.create(args);
       const token = signToken(user);
@@ -30,13 +28,13 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw new AuthenticationError("Incorrect credentials");
+        throw new AuthenticationError("Incorrect email");
       }
 
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError("Incorrect credentials");
+        throw new AuthenticationError("Incorrect password");
       }
 
       const token = signToken(user);
@@ -56,7 +54,7 @@ const resolvers = {
         return err;
       }
     },
-    
+
     removeBook: async (_, { bookId }, context) => {
       try {
         const updatedUser = await User.findOneAndUpdate(
@@ -67,9 +65,9 @@ const resolvers = {
         return updatedUser;
       } catch (err) {
         console.log(err);
-      }
-    },
-  },
+      };
+    }
+  }
 };
 
 module.exports = resolvers;
